@@ -1,0 +1,103 @@
+root@OpenWrt:/etc/config# cat network
+config interface 'loopback'
+	option device 'lo'
+	option proto 'static'
+	option ipaddr '127.0.0.1'
+	option netmask '255.0.0.0'
+
+
+config device
+	option name 'br-lan'
+	option type 'bridge'
+	option vlan_filtering '1'
+	list ports 'eth0'
+	list ports 'eth1'
+	list ports 'eth2'
+	list ports 'eth3'
+	list ports 'eth4'
+	list ports 'eth5'
+	list ports 'eth6'
+	list ports 'eth7'
+	list ports 'eth8'
+	list ports 'eth9'
+	list ports 'eth10'
+	list ports 'eth11'
+	list ports 'eth12'
+	list ports 'eth13'
+	list ports 'eth14'
+	list ports 'eth15'
+	list ports 'eth16'
+	list ports 'eth17'
+	list ports 'eth18'
+	list ports 'eth19'
+
+# ---------- VLAN 10 - Finance ----------
+config bridge-vlan
+	option device 'br-lan'
+	option vlan '10'
+	list ports 'eth0:t'
+	list ports 'eth1:u*'
+	list ports 'eth2:u*'
+	list ports 'eth3:u*'
+	list ports 'eth4:u*'
+	list ports 'eth5:u*'
+	list ports 'eth6:u*'
+
+# ---------- VLAN 20 - Servers ----------
+config bridge-vlan
+	option device 'br-lan'
+	option vlan '20'
+	list ports 'eth0:t'
+	list ports 'eth7:u*'
+	list ports 'eth8:u*'
+	list ports 'eth9:u*'
+	list ports 'eth10:u*'
+	list ports 'eth11:u*'
+	list ports 'eth12:u*'
+
+# ---------- VLAN 30 - IT ----------
+config bridge-vlan
+	option device 'br-lan'
+	option vlan '30'
+	list ports 'eth0:t'
+	list ports 'eth13:u*'
+	list ports 'eth14:u*'
+	list ports 'eth15:u*'
+	list ports 'eth16:u*'
+	list ports 'eth17:u*'
+	list ports 'eth18:u*'
+
+# ---------- VLAN 99 - Management ----------
+config bridge-vlan
+	option device 'br-lan'
+	option vlan '99'
+	list ports 'eth0:t'
+	list ports 'eth19:u*'
+
+
+# ---------- L3 interfaces ----------
+config interface 'finance'
+	option device 'br-lan.10'
+	option proto 'static'
+	option ipaddr '192.168.10.1'
+	option netmask '255.255.255.0'
+
+config interface 'servers'
+	option device 'br-lan.20'
+	option proto 'static'
+	option ipaddr '192.168.20.1'
+	option netmask '255.255.255.0'
+
+config interface 'it'
+	option device 'br-lan.30'
+	option proto 'static'
+	option ipaddr '192.168.30.1'
+	option netmask '255.255.255.0'
+
+config interface 'mgmt'
+	option device 'br-lan.99'
+	option proto 'static'
+	option ipaddr '192.168.122.50'
+	option netmask '255.255.255.0'
+	option gateway '192.168.122.1'
+	list dns '192.168.122.1'
