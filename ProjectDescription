@@ -1,0 +1,14 @@
+I am learning openwrt by creating project on gns3.
+I have a gns3 VM with 20 ethernet ports. I would like to create the VLANS as follows:
+
+eth0 - Trunk port
+eth019 - MANAGEMENT  - 192.168.122.50/24 GW 192.168.122.1 DNS 192.168.122.1 - VLAN 99
+eth1 - eth6 - Finance (192.168.10.0/24) - VLAN 10
+eth7 - eth12 - Servers (192.168.20.0/24) - VLAN 20
+eth13 - eth18 - IT (192.168.30.0/24) - VLAN 30
+
+
+
+
+
+
