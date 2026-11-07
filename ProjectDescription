@@ -11,6 +11,8 @@ The management port has access to internet. I would also like to allow all the V
 All the VLANs should be reachable via ping
 Allow dhcp access on all the VLANs
 
+Generate the files for above configuration.
+
 
 
 
