@@ -1,0 +1,252 @@
+config defaults
+        option input 'REJECT'
+        option output 'ACCEPT'
+        option forward 'REJECT'
+        option synflood_protect '1'
+        
+config zone
+        option name 'finance'
+        list network 'finance'
+        option input 'REJECT'
+        option output 'ACCEPT'
+        option forward 'REJECT'
+        
+config zone
+        option name 'servers'
+        list network 'servers'
+        option input 'REJECT'
+        option output 'ACCEPT'
+        option forward 'REJECT'
+        
+config zone
+        option name 'it'
+        list network 'it'
+        option input 'REJECT'
+        option output 'ACCEPT'
+        option forward 'REJECT'
+        
+config zone
+        option name 'management'
+        list network 'management'
+        option input 'REJECT'
+        option output 'ACCEPT'
+        option forward 'REJECT'
+        option masq '1'
+        option mtu_fix '1'
+        
+# IT to Finance
+config forwarding
+        option src 'it'
+        option dest 'finance'
+
+# IT to Servers
+config forwarding
+        option src 'it'
+        option dest 'servers'
+        
+# Finance to Internet
+config forwarding
+        option src 'finance'
+        option dest 'management'
+
+# Servers to Internet
+config forwarding
+        option src 'servers'
+        option dest 'management'
+
+# IT to Internet
+config forwarding
+        option src 'it'
+        option dest 'management'
+        
+        
+# Finance DHCP
+config rule
+        option name 'Finance-DHCP'
+        option src 'finance'
+        option proto 'udp'
+        option dest_port '67'
+        option family 'ipv4'
+        option target 'ACCEPT'
+
+# Finance DNS
+config rule
+        option name 'Finance-DNS'
+        option src 'finance'
+        option proto 'tcp udp'
+        option dest_port '53'
+        option family 'ipv4'
+        option target 'ACCEPT'
+
+# Servers DHCP
+config rule
+        option name 'Servers-DHCP'
+        option src 'servers'
+        option proto 'udp'
+        option dest_port '67'
+        option family 'ipv4'
+        option target 'ACCEPT'
+
+# Servers DNS
+config rule
+        option name 'Servers-DNS'
+        option src 'servers'
+        option proto 'tcp udp'
+        option dest_port '53'
+        option family 'ipv4'
+        option target 'ACCEPT'
+
+# IT DHCP
+config rule
+        option name 'IT-DHCP'
+        option src 'it'
+        option proto 'udp'
+        option dest_port '67'
+        option family 'ipv4'
+        option target 'ACCEPT'
+
+# IT DNS
+config rule
+        option name 'IT-DNS'
+        option src 'it'
+        option proto 'tcp udp'
+        option dest_port '53'
+        option family 'ipv4'
+        option target 'ACCEPT'
+        
+# Finance to Servers
+config rule
+        option name 'Finance-to-Servers-Ping'
+        option src 'finance'
+        option dest 'servers'
+        option proto 'icmp'
+        option family 'ipv4'
+        option target 'ACCEPT'
+
+# Finance to IT
+config rule
+        option name 'Finance-to-IT-Ping'
+        option src 'finance'
+        option dest 'it'
+        option proto 'icmp'
+        option family 'ipv4'
+        option target 'ACCEPT'
+
+# Servers to Finance
+config rule
+        option name 'Servers-to-Finance-Ping'
+        option src 'servers'
+        option dest 'finance'
+        option proto 'icmp'
+        option family 'ipv4'
+        option target 'ACCEPT'
+
+# Servers to IT
+config rule
+        option name 'Servers-to-IT-Ping'
+        option src 'servers'
+        option dest 'it'
+        option proto 'icmp'
+        option family 'ipv4'
+        option target 'ACCEPT'
+
+# IT to Finance
+config rule
+        option name 'IT-to-Finance-Ping'
+        option src 'it'
+        option dest 'finance'
+        option proto 'icmp'
+        option family 'ipv4'
+        option target 'ACCEPT'
+
+# IT to Servers
+config rule
+        option name 'IT-to-Servers-Ping'
+        option src 'it'
+        option dest 'servers'
+        option proto 'icmp'
+        option family 'ipv4'
+        option target 'ACCEPT'
+        
+config rule
+        option name 'Finance-to-Application-HTTPS'
+        option src 'finance'
+        option dest 'servers'
+        option dest_ip '192.168.20.10'
+        option proto 'tcp'
+        option dest_port '443'
+        option family 'ipv4'
+        option target 'ACCEPT'
+        
+config rule
+        option name 'IT-Admin-SSH'
+        option src 'it'
+        option src_ip '192.168.30.10'
+        option proto 'tcp'
+        option dest_port '22'
+        option target 'ACCEPT'
+        
+config rule
+        option name 'IT-Admin-LuCI'
+        option src 'it'
+        option src_ip '192.168.30.10'
+        option proto 'tcp'
+        option dest_port '80 443'
+        option target 'ACCEPT'
+        
+config rule
+        option name 'Management-Admin-SSH'
+        option src 'management'
+        option src_ip '192.168.122.100'
+        option proto 'tcp'
+        option dest_port '22'
+        option target 'ACCEPT'
+        
+config rule
+        option name 'Management-Ping-Finance'
+        option src 'management'
+        option dest 'finance'
+        option proto 'icmp'
+        option target 'ACCEPT'
+
+config rule
+        option name 'Management-Ping-Servers'
+        option src 'management'
+        option dest 'servers'
+        option proto 'icmp'
+        option target 'ACCEPT'
+
+config rule
+        option name 'Management-Ping-IT'
+        option src 'management'
+        option dest 'it'
+        option proto 'icmp'
+        option target 'ACCEPT'
+        
+# Finance can ping its gateway
+config rule
+        option name 'Finance-Ping-Gateway'
+        option src 'finance'
+        option proto 'icmp'
+        option target 'ACCEPT'
+
+# Servers can ping its gateway
+config rule
+        option name 'Servers-Ping-Gateway'
+        option src 'servers'
+        option proto 'icmp'
+        option target 'ACCEPT'
+
+# IT can ping its gateway
+config rule
+        option name 'IT-Ping-Gateway'
+        option src 'it'
+        option proto 'icmp'
+        option target 'ACCEPT'
+
+# Management can ping its gateway
+config rule
+        option name 'Management-Ping-Gateway'
+        option src 'management'
+        option proto 'icmp'
+        option target 'ACCEPT'     
